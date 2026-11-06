@@ -19,9 +19,9 @@ class FinancialTransaction < ApplicationRecord
   end
 
   def formatted_signed_amount
-    euros = amount_cents / 100.0
-    formatted = format("%.2f", euros).tr(".", ",")
-    sign = kind == "expense" ? "−" : "+"
-    "#{sign}#{formatted} €"
+    dollars = amount_cents / 100.0
+    formatted = format("%.2f", dollars)
+    sign = kind == "expense" ? "-" : "+"
+    "#{sign}$#{formatted}"
   end
 end

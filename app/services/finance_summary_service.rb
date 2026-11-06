@@ -113,16 +113,16 @@ class FinanceSummaryService
   def format_euros_with_decimals(cents)
     negative = cents.negative?
     abs_cents = cents.abs
-    euros = abs_cents / 100
+    dollars = abs_cents / 100
     rem = abs_cents % 100
-    int_part = euros.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1.').reverse
-    prefix = negative ? "−" : ""
-    "#{prefix}#{int_part},#{format('%02d', rem)} €"
+    int_part = dollars.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+    prefix = negative ? "-" : ""
+    "#{prefix}$#{int_part}.#{format('%02d', rem)}"
   end
 
   def format_euros_short(cents)
-    euros = (cents / 100.0).round
-    int_part = euros.abs.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1.').reverse
-    "#{cents.negative? ? '−' : ''}#{int_part} €"
+    dollars = (cents / 100.0).round
+    int_part = dollars.abs.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+    "#{cents.negative? ? '-' : ''}$#{int_part}"
   end
 end

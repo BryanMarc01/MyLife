@@ -29,11 +29,11 @@ module ApplicationHelper
   end
 
   def format_bpa_money(cents)
-    euros = cents.to_f / 100.0
-    sign = euros.negative? ? "-" : ""
-    abs_val = euros.abs
+    dollars = cents.to_f / 100.0
+    sign = dollars.negative? ? "-" : ""
+    abs_val = dollars.abs
     whole, dec = format("%.2f", abs_val).split(".")
-    whole_with_dots = whole.reverse.gsub(/(\d{3})(?=\d)/, '\\1.').reverse
-    "#{sign}#{whole_with_dots},#{dec} €"
+    whole_with_commas = whole.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+    "#{sign}$#{whole_with_commas}.#{dec}"
   end
 end

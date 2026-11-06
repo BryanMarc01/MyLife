@@ -81,7 +81,7 @@ class AppMyLifeFlowsTest < ActionDispatch::IntegrationTest
 
     get finances_path
     assert_response :success
-    assert_match "0,00 €", response.body
+    assert_match "$0.00", response.body
     assert_no_match "Cena de Alex", response.body
 
     # Lucía cannot delete Alex's idea
