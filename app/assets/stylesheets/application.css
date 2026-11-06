@@ -366,6 +366,178 @@ body.bpa-body {
   text-decoration: underline;
 }
 
+.bpa-social-buttons {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bpa-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 14px;
+  border: 1px solid #e7e3ed;
+  background: #ffffff;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #211933;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.bpa-social-btn:hover {
+  background: #f8f7fc;
+  border-color: #cfc3ed;
+  transform: translateY(-1px);
+}
+
+.bpa-auth-divider {
+  margin-top: 22px;
+  margin-bottom: -6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #96919f;
+}
+
+.bpa-auth-divider::before,
+.bpa-auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #efedf4;
+}
+
+.bpa-auth-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bpa-forgot-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6027ed;
+  text-decoration: none;
+}
+
+.bpa-forgot-link:hover {
+  text-decoration: underline;
+}
+
+.bpa-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bpa-auth-input--password {
+  padding-right: 46px;
+}
+
+.bpa-eye-btn {
+  position: absolute;
+  right: 10px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #85818e;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.bpa-eye-btn:hover {
+  color: #6027ed;
+  background: #eeeaf8;
+}
+
+.bpa-remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #5e586e;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bpa-remember-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #6027ed;
+  cursor: pointer;
+}
+
+.bpa-strength-bars {
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.bpa-strength-bar {
+  height: 4px;
+  border-radius: 9999px;
+  background: #e7e3ed;
+  transition: background-color 0.2s ease;
+}
+
+.bpa-strength-label,
+.bpa-match-hint {
+  font-size: 11px;
+  font-weight: 600;
+  color: #96919f;
+}
+
+.bpa-auth-social-dialog {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 26px;
+  background: #ffffff;
+  padding: 28px;
+  box-shadow: 0 24px 80px rgba(45, 35, 70, 0.18);
+}
+
+.bpa-auth-social-top {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bpa-auth-social-badge {
+  display: inline-block;
+  border-radius: 9999px;
+  background: #eeeaf8;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #6027ed;
+}
+
+.bpa-reset-link-card {
+  margin-top: 22px;
+  border-radius: 18px;
+  border: 1px solid #d8ceed;
+  background: #f8f7fc;
+  padding: 18px;
+}
+
+.bpa-reset-link-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #211933;
+}
+
 /* Main Area */
 .bpa-main {
   position: relative;

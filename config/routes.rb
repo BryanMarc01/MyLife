@@ -5,10 +5,16 @@ Rails.application.routes.draw do
 
   get "login", to: "sessions#new", as: :login
   post "login", to: "sessions#create"
+  post "auth/social", to: "sessions#social", as: :social_auth
   delete "logout", to: "sessions#destroy", as: :logout
 
   get "signup", to: "registrations#new", as: :signup
   post "signup", to: "registrations#create"
+
+  get "password/forgot", to: "password_resets#new", as: :forgot_password
+  post "password/forgot", to: "password_resets#create"
+  get "password/reset", to: "password_resets#edit", as: :edit_password_reset
+  patch "password/reset", to: "password_resets#update", as: :password_reset
 
   resources :entries, only: [:create]
   resources :tasks, only: [:index, :create, :destroy] do

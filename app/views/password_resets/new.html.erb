@@ -1,0 +1,37 @@
+<% content_for :title, "Recuperar contraseña — AppMyLife" %>
+
+<p class="bpa-eyebrow">Recuperación de acceso</p>
+<h1 class="bpa-auth-title">¿Olvidaste tu clave?</h1>
+<p class="bpa-auth-subtitle">Ingresa tu correo y generaremos un enlace temporal seguro para restablecerla.</p>
+
+<% if @reset_url.present? %>
+  <div class="bpa-reset-link-card">
+    <p class="bpa-reset-link-title">Enlace directo de restablecimiento:</p>
+    <%= link_to "Restablecer mi contraseña ahora →", @reset_url, class: "bpa-auth-submit", style: "margin-top: 10px; text-decoration: none;" %>
+  </div>
+<% else %>
+  <%= form_with url: forgot_password_path, method: :post, class: "bpa-auth-form" do %>
+    <div class="bpa-auth-field">
+      <label class="bpa-auth-label" for="reset-email">Correo de tu cuenta</label>
+      <input
+        id="reset-email"
+        type="email"
+        name="email"
+        autocomplete="email"
+        placeholder="tu@correo.com"
+        required
+        autofocus
+        class="bpa-auth-input"
+      >
+    </div>
+
+    <button type="submit" class="bpa-auth-submit">
+      <span>Generar enlace de recuperación</span>
+      <%= bpa_icon("arrow", size: 18) %>
+    </button>
+  <% end %>
+<% end %>
+
+<p class="bpa-auth-footer">
+  <%= link_to "← Volver a iniciar sesión", login_path, class: "bpa-auth-link" %>
+</p>

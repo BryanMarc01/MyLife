@@ -13,6 +13,13 @@ class AppMyLifeFlowsTest < ActionDispatch::IntegrationTest
     get root_path
     assert_redirected_to login_path
 
+    get login_path
+    assert_response :success
+    assert_match "¿Olvidaste tu contraseña?", response.body
+    assert_match "Mantener mi sesión iniciada", response.body
+    assert_match "Google", response.body
+    assert_match "GitHub", response.body
+
     get signup_path
     assert_response :success
     assert_match "Crea tu cuenta.", response.body
@@ -24,7 +31,8 @@ class AppMyLifeFlowsTest < ActionDispatch::IntegrationTest
           email: "alex@example.com",
           password: "password123",
           password_confirmation: "password123"
-        }
+        },
+        remember_me: "1"
       }
     end
     assert_redirected_to root_path
@@ -32,6 +40,37 @@ class AppMyLifeFlowsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "Hola, Alex.", response.body
     assert_match "Una chispa. Todo en orden.", response.body
+  end
+
+  test "social sign in and password reset flows work end to end" do
+    # 1. Social quick login (Google) without external API keys
+    assert_difference -> { User.count }, 1 do
+      post social_auth_path, params: {
+        provider: "google",
+        name: "Bryan Marc",
+        email: "bryan@gmail.com"
+      }
+    end
+    assert_redirected_to root_path
+    follow_redirect!
+    assert_match "Hola, Bryan Marc.", response.body
+
+    delete logout_path
+
+    # 2. Password reset flow with signed expiring token
+    user = User.find_by!(email: "bryan@gmail.com")
+    token = user.generate_token_for(:password_reset)
+
+    get edit_password_reset_path(token: token)
+    assert_response :success
+    assert_match "Nueva contraseña.", response.body
+
+    patch password_reset_path(token: token), params: {
+      password: "NuevaClaveSegura123!",
+      password_confirmation: "NuevaClaveSegura123!"
+    }
+    assert_redirected_to root_path
+    assert user.reload.authenticate("NuevaClaveSegura123!")
   end
 
   test "private data isolation between different user accounts" do

@@ -10,8 +10,7 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(registration_params)
     if @user.save
-      reset_session
-      session[:user_id] = @user.id
+      sign_in_user(@user, remember: params[:remember_me] != "0")
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity

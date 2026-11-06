@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_06_153500) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_06_160200) do
   create_table "automation_rules", force: :cascade do |t|
     t.string "title", null: false
     t.boolean "active", default: true, null: false
@@ -97,6 +97,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_153500) do
     t.boolean "discrete_finance_mode", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "remember_digest"
+    t.string "auth_provider"
+    t.string "auth_uid"
+    t.datetime "last_login_at"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

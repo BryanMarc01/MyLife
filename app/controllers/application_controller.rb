@@ -11,11 +11,45 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return @current_user if defined?(@current_user)
-    @current_user = session[:user_id] ? User.find_by(id: session[:user_id]) : nil
+
+    if session[:user_id]
+      @current_user = User.find_by(id: session[:user_id])
+    elsif cookies.signed[:remember_user_id] && cookies.signed[:remember_token]
+      user = User.find_by(id: cookies.signed[:remember_user_id])
+      if user&.authenticated_remember?(cookies.signed[:remember_token])
+        session[:user_id] = user.id
+        @current_user = user
+      end
+    end
+
+    @current_user
   end
 
   def logged_in?
     current_user.present?
+  end
+
+  def sign_in_user(user, remember: false)
+    reset_session
+    session[:user_id] = user.id
+    user.update_column(:last_login_at, Time.current)
+
+    if remember
+      raw_token = user.remember!
+      cookies.signed.permanent[:remember_user_id] = { value: user.id, httponly: true, same_site: :lax }
+      cookies.signed.permanent[:remember_token] = { value: raw_token, httponly: true, same_site: :lax }
+    else
+      user.forget!
+      cookies.delete(:remember_user_id)
+      cookies.delete(:remember_token)
+    end
+  end
+
+  def sign_out_user
+    current_user&.forget!
+    cookies.delete(:remember_user_id)
+    cookies.delete(:remember_token)
+    reset_session
   end
 
   def require_authentication
