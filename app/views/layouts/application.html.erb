@@ -156,7 +156,6 @@
         aria-label="Capturar"
         hidden
         data-composer-target="modal"
-        data-action="click->composer#backdropClose"
       >
         <%= form_with url: entries_path, method: :post, class: "bpa-composer-dialog" do %>
           <input type="hidden" name="entry_type" value="<%= default_composer_type %>" data-composer-target="typeInput">

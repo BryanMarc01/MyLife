@@ -63,12 +63,6 @@ export default class extends Controller {
     }
   }
 
-  backdropClose(event) {
-    if (event.target === this.modalTarget) {
-      this.close()
-    }
-  }
-
   switchType(event) {
     const newType = event.currentTarget.dataset.type
     if (newType) {
