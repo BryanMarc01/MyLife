@@ -1,0 +1,159 @@
+<% content_for :title, "Widgets iOS · Una chispa, a un toque — AppMyLife" %>
+
+<section class="aml-widgets-board" data-node-id="2:5685" data-name="Widgets iOS · Una chispa, a un toque" data-controller="privacy" data-privacy-balance-value="<%= @finance_summary.formatted_balance %>" data-privacy-hidden-by-default-value="true">
+  <!-- Identidad -->
+  <div class="aml-widgets-header" data-node-id="2:5686" data-name="Identidad">
+    <div class="aml-widgets-brand" data-node-id="2:5687" data-name="Marca">
+      <div class="aml-icon-slot" data-node-id="2:5688" data-name="Símbolo AppMyLife">
+        <img src="/assets/figma/simbolo-appmylife-40.svg" alt="AppMyLife" class="aml-svg">
+      </div>
+      <p class="aml-brand-title" data-node-id="2:5691">AppMyLife</p>
+    </div>
+    <p class="aml-widgets-kicker" data-node-id="2:5692">COMPLEMENTOS PARA iOS</p>
+  </div>
+
+  <!-- Presentación -->
+  <div class="aml-widgets-intro" data-node-id="2:5693" data-name="Presentación">
+    <div class="aml-widgets-headline" data-node-id="2:5694">
+      <p>Una chispa,</p>
+      <p>a un toque de distancia.</p>
+    </div>
+    <p class="aml-widgets-sub" data-node-id="2:5695">
+      Lo importante, en tu pantalla de inicio. Captura al abrir la app y retoma tus ideas sin perder el hilo.
+    </p>
+  </div>
+
+  <!-- Propuestas de captura e ideas -->
+  <div class="aml-widgets-tray" data-node-id="2:5696" data-name="Propuestas de captura e ideas">
+    <!-- Widget pequeño -->
+    <div class="aml-widget-col-small" data-node-id="2:5697" data-name="Widget pequeño">
+      <%= link_to new_capture_path, class: "aml-widget-small", data: { node_id: "2:5698", name: "Captura rápida" } do %>
+        <div class="aml-widget-small-top" data-node-id="2:5699" data-name="Marca y acceso">
+          <div class="aml-icon-slot" data-node-id="2:5700" data-name="Símbolo AppMyLife">
+            <img src="/assets/figma/simbolo-appmylife-32.svg" alt="" class="aml-svg">
+          </div>
+          <div class="aml-icon-slot" data-node-id="2:5997" data-name="arrow-up-right">
+            <img src="/assets/figma/arrow-up-right-gray.svg" alt="" class="aml-svg">
+          </div>
+        </div>
+        <div class="aml-widget-small-bottom" data-node-id="2:5704" data-name="Contenido">
+          <div class="aml-widget-small-mic" data-node-id="2:5705" data-name="Micrófono">
+            <div class="aml-icon-slot" data-node-id="2:6000" data-name="mic">
+              <img src="/assets/figma/mic-19-white.svg" alt="" class="aml-svg">
+            </div>
+          </div>
+          <div class="aml-widget-small-title" data-node-id="2:5707">
+            <p>Captura</p>
+            <p>una idea</p>
+          </div>
+        </div>
+      <% end %>
+      <p class="aml-widget-caption" data-node-id="2:5708">PEQUEÑO · CAPTURA</p>
+    </div>
+
+    <!-- Widget mediano de ideas -->
+    <div class="aml-widget-col-medium" data-node-id="2:5709" data-name="Widget mediano de ideas">
+      <div class="aml-widget-medium-purple" data-node-id="2:5710" data-name="Idea pendiente">
+        <div class="aml-widget-medium-top" data-node-id="2:5711" data-name="Contexto">
+          <p class="aml-widget-medium-kicker" data-node-id="2:5712">PARA RETOMAR HOY</p>
+          <div class="aml-icon-slot" data-node-id="2:6003" data-name="sparkles">
+            <img src="/assets/figma/sparkles-mint.svg" alt="" class="aml-svg">
+          </div>
+        </div>
+
+        <div class="aml-widget-medium-idea" data-node-id="2:5714" data-name="Idea">
+          <p class="aml-widget-medium-title" data-node-id="2:5715"><%= @featured_idea&.title || "Un rincón para leer" %></p>
+          <p class="aml-widget-medium-sub" data-node-id="2:5716"><%= @featured_idea&.next_step_preview || "Elegir el lugar · Personal" %></p>
+        </div>
+
+        <div class="aml-widget-shortcuts" data-node-id="2:5717" data-name="Atajos">
+          <%= link_to idea_path(@featured_idea || 1), class: "aml-widget-shortcut-pill", data: { node_id: "2:5718", name: "Atajo a la app" } do %>
+            <div class="aml-icon-slot" data-node-id="2:6006" data-name="arrow-up-right">
+              <img src="/assets/figma/arrow-up-right-14-white.svg" alt="" class="aml-svg">
+            </div>
+            <span class="aml-widget-shortcut-text" data-node-id="2:5720">Ver idea</span>
+          <% end %>
+
+          <%= link_to new_capture_path, class: "aml-widget-shortcut-pill", data: { node_id: "2:5721", name: "Atajo a la app" } do %>
+            <div class="aml-icon-slot" data-node-id="2:6009" data-name="mic">
+              <img src="/assets/figma/mic-14-white.svg" alt="" class="aml-svg">
+            </div>
+            <span class="aml-widget-shortcut-text" data-node-id="2:5723">Capturar</span>
+          <% end %>
+
+          <%= link_to new_capture_path(mode: "note"), class: "aml-widget-shortcut-pill", data: { node_id: "2:5724", name: "Atajo a la app" } do %>
+            <div class="aml-icon-slot" data-node-id="2:6012" data-name="plus">
+              <img src="/assets/figma/plus-14-white.svg" alt="" class="aml-svg">
+            </div>
+            <span class="aml-widget-shortcut-text" data-node-id="2:5726">Nota</span>
+          <% end %>
+        </div>
+      </div>
+      <p class="aml-widget-caption" data-node-id="2:5727">MEDIANO · IDEAS</p>
+    </div>
+  </div>
+
+  <!-- Propuesta financiera -->
+  <div class="aml-widgets-finance-row" data-node-id="2:5728" data-name="Propuesta financiera">
+    <div class="aml-widget-col-medium" data-node-id="2:5729" data-name="Widget mediano de finanzas">
+      <div class="aml-widget-medium-white" data-node-id="2:5730" data-name="Finanzas discretas">
+        <div class="aml-widget-medium-top" data-node-id="2:5731" data-name="Periodo y privacidad">
+          <p class="aml-widget-finance-period" data-node-id="2:5732">NOVIEMBRE · AL 6 NOV</p>
+          <button type="button" class="aml-icon-btn-plain" data-action="click->privacy#toggle" title="Mostrar / ocultar saldo" data-node-id="2:6015" data-name="eye-off">
+            <img src="/assets/figma/eye-off.svg" alt="" class="aml-svg">
+          </button>
+        </div>
+
+        <div class="aml-widget-finance-summary" data-node-id="2:5734" data-name="Resumen">
+          <div class="aml-widget-finance-hidden" data-node-id="2:5735" data-name="Saldo oculto">
+            <p class="aml-widget-finance-label" data-node-id="2:5736">Saldo registrado</p>
+            <p class="aml-widget-finance-dots" data-node-id="2:5737" data-privacy-target="amount">•••• €</p>
+          </div>
+
+          <div class="aml-status-badge-mint aml-status-badge-mint--compact" data-node-id="2:5738" data-name="Estado del presupuesto">
+            <span class="aml-status-badge-mint-text aml-status-badge-mint-text--10" data-node-id="2:5739"><%= @finance_summary.status_label %></span>
+          </div>
+        </div>
+
+        <div class="aml-widget-finance-links" data-node-id="2:5740" data-name="Accesos financieros">
+          <%= link_to finances_path, class: "aml-widget-finance-link", data: { node_id: "2:5741", name: "Ver finanzas" } do %>
+            <div class="aml-icon-slot" data-node-id="2:6018" data-name="chart-no-axes-combined">
+              <img src="/assets/figma/chart-15-purple.svg" alt="" class="aml-svg">
+            </div>
+            <span class="aml-widget-finance-link-text" data-node-id="2:5743">Ver finanzas</span>
+          <% end %>
+
+          <%= link_to finances_path(new_expense: "1"), class: "aml-widget-finance-link", data: { node_id: "2:5744", name: "Anotar gasto" } do %>
+            <div class="aml-icon-slot" data-node-id="2:6021" data-name="plus">
+              <img src="/assets/figma/plus-15-purple.svg" alt="" class="aml-svg">
+            </div>
+            <span class="aml-widget-finance-link-text" data-node-id="2:5746">Anotar gasto</span>
+          <% end %>
+        </div>
+      </div>
+      <p class="aml-widget-caption" data-node-id="2:5747">MEDIANO · FINANZAS / MODO DISCRETO</p>
+    </div>
+
+    <div class="aml-widget-privacy-copy" data-node-id="2:5748" data-name="Criterio de privacidad">
+      <div class="aml-icon-slot" data-node-id="2:6024" data-name="shield-check">
+        <img src="/assets/figma/shield-check-purple.svg" alt="" class="aml-svg">
+      </div>
+      <p class="aml-widget-privacy-title" data-node-id="2:5750">A la vista, solo lo justo.</p>
+      <p class="aml-widget-privacy-desc" data-node-id="2:5751">
+        Importes ocultos en esta propuesta. Un estado útil sin exponer tus números.
+      </p>
+    </div>
+  </div>
+
+  <div class="aml-divider" data-node-id="2:5752" data-name="Separador"></div>
+
+  <!-- Comportamiento previsto -->
+  <div class="aml-widgets-footer" data-node-id="2:5753" data-name="Comportamiento previsto">
+    <div class="aml-icon-slot" data-node-id="2:6027" data-name="info">
+      <img src="/assets/figma/info-purple.svg" alt="" class="aml-svg">
+    </div>
+    <p class="aml-widgets-footer-text" data-node-id="2:5755">
+      Todos los atajos abren AppMyLife. La grabación se inicia dentro de la app, con tu permiso. Los gastos se revisan y confirman allí; el widget no realiza operaciones financieras.
+    </p>
+  </div>
+</section>

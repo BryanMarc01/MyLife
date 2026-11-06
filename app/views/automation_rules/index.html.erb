@@ -1,0 +1,103 @@
+<% content_for :title, "Automatizaciones · Tú decides — AppMyLife" %>
+
+<div class="aml-page">
+  <div class="aml-page-header-row">
+    <div>
+      <p class="aml-screen-brand">AppMyLife · Reglas de control</p>
+      <h1 class="aml-screen-title">Menos rutina. Más vida.</h1>
+      <p class="aml-screen-subtitle">Pequeñas reglas para quitarte trabajo, no el control.</p>
+    </div>
+
+    <div class="aml-rules-summary-pill" style="width: auto;">
+      <img src="/assets/figma/workflow-19.svg" alt="" class="aml-svg">
+      <p class="aml-rules-active-count">
+        <%= @active_count %> <%= @active_count == 1 ? "regla activa" : "reglas activas" %>
+      </p>
+      <p class="aml-rules-total-count">de <%= @total_count %> creadas</p>
+    </div>
+  </div>
+
+  <div class="aml-dashboard-grid">
+    <!-- Columna Izquierda: Tus reglas activas e inactivas -->
+    <div class="aml-dashboard-col">
+      <section class="aml-card-surface aml-rules-list">
+        <% if @rules.any? %>
+          <% @rules.each_with_index do |rule, idx| %>
+            <div class="aml-rule-card">
+              <div class="aml-rule-top">
+                <img src="/assets/figma/<%= rule.icon_name %>.svg" alt="" class="aml-svg">
+                <div class="aml-rule-title-group">
+                  <p class="aml-rule-title"><%= rule.title %></p>
+                  <p class="aml-rule-status <%= rule.active? ? 'is-active' : 'is-inactive' %>">
+                    <%= rule.active? ? "Activa" : "Inactiva" %>
+                  </p>
+                </div>
+                <%= button_to toggle_automation_rule_path(rule), method: :patch, class: "aml-rule-toggle-btn", title: rule.active? ? "Desactivar regla" : "Activar regla" do %>
+                  <img src="/assets/figma/<%= rule.active? ? 'toggle-on.svg' : 'toggle-off.svg' %>" alt="<%= rule.active? ? 'Activa' : 'Inactiva' %>" class="aml-svg">
+                <% end %>
+                <%= button_to "×", automation_rule_path(rule), method: :delete, class: "aml-step-delete-btn", title: "Eliminar regla" %>
+              </div>
+
+              <div class="aml-rule-details">
+                <p class="aml-rule-condition"><%= rule.trigger_condition %></p>
+                <p class="aml-rule-result"><%= rule.action_result %></p>
+                <p class="aml-rule-confirm"><%= rule.confirmation_note %></p>
+              </div>
+
+              <% unless idx == @rules.size - 1 %>
+                <div class="aml-divider"></div>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="aml-empty-state" style="padding: 20px 16px;">
+            <p>No tienes reglas creadas todavía. Crea tu primera regla en el formulario de la derecha.</p>
+          </div>
+        <% end %>
+      </section>
+    </div>
+
+    <!-- Columna Derecha: Crear una nueva regla sencilla -->
+    <div class="aml-dashboard-col">
+      <section class="aml-card-surface aml-new-rule-block">
+        <div class="aml-section-header">
+          <h2 class="aml-section-title">Crear una regla sencilla</h2>
+        </div>
+
+        <p class="aml-screen-subtitle">
+          Define qué condición quieres detectar y qué sugerencia debe proponerte AppMyLife.
+        </p>
+
+        <%= form_with url: automation_rules_path, method: :post, class: "aml-inline-form-card", style: "margin-top: 8px;" do %>
+          <label class="aml-field-label">Nombre de la regla</label>
+          <input type="text" name="title" placeholder="Ej. Viernes de revisión" required class="aml-inline-input">
+
+          <label class="aml-field-label">Condición (Cuando…)</label>
+          <input type="text" name="trigger_condition" placeholder="Ej. Al abrir la app los viernes por la tarde" required class="aml-inline-input">
+
+          <label class="aml-field-label">Resultado (→ Qué hacer)</label>
+          <input type="text" name="action_result" placeholder="Ej. Destacar 1 idea pendiente de Proyectos" required class="aml-inline-input">
+
+          <label class="aml-field-label">Icono</label>
+          <select name="icon_name" class="aml-inline-select">
+            <option value="mic-rule">Voz / Captura</option>
+            <option value="list-checks">Pasos / Tareas</option>
+            <option value="wallet">Finanzas / Presupuesto</option>
+          </select>
+
+          <button type="submit" class="aml-soft-action-btn" style="margin-top: 6px;">
+            <img src="/assets/figma/plus-purple.svg" alt="" class="aml-svg">
+            <span class="aml-soft-action-text">Guardar y activar regla</span>
+          </button>
+        <% end %>
+
+        <div class="aml-control-guarantee" style="margin-top: 8px;">
+          <img src="/assets/figma/shield-check-gray.svg" alt="" class="aml-svg">
+          <p class="aml-control-guarantee-text">
+            Las acciones sensibles siempre necesitan tu confirmación.
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

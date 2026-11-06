@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title><%= content_for(:title) || "AppMyLife" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Tus ideas. Tus finanzas. Menos esfuerzo.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="AppMyLife">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/appmylife-mark.png" type="image/png">
+    <link rel="apple-touch-icon" href="/appmylife-mark.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <%
+    default_composer_type = case @active_tab
+                            when "tareas" then "tasks"
+                            when "finanzas" then "money"
+                            else "ideas"
+                            end
+    eyebrow_text = case @active_tab
+                   when "ideas" then "#{@ideas_count} guardadas"
+                   when "tareas" then "#{@pending_tasks_count} pendientes"
+                   when "finanzas" then "Este mes"
+                   else "Captura el momento. Recupera tu tiempo."
+                   end
+    heading_title = case @active_tab
+                    when "ideas" then "Ideas"
+                    when "tareas" then "Tareas"
+                    when "finanzas" then "Dinero"
+                    else "Hola, #{@settings.user_name}."
+                    end
+  %>
+
+  <body class="bpa-body" data-controller="composer" data-composer-default-type-value="<%= default_composer_type %>">
+    <main class="bpa-app-root">
+      <div class="bpa-shell">
+        <!-- Sidebar Izquierdo (Desktop) -->
+        <aside class="bpa-sidebar">
+          <%= link_to root_path, class: "bpa-brand-link", aria: { label: "Ir al inicio" } do %>
+            <img src="/appmylife-mark.png" alt="" class="bpa-brand-mark">
+            <span class="bpa-brand-name">AppMyLife</span>
+          <% end %>
+
+          <nav class="bpa-sidebar-nav" aria-label="Secciones">
+            <%= link_to root_path, class: "bpa-nav-item #{'is-active' if @active_tab == 'inicio'}" do %>
+              <%= bpa_icon("home", size: 20) %>
+              <span>Hoy</span>
+            <% end %>
+
+            <%= link_to ideas_path, class: "bpa-nav-item #{'is-active' if @active_tab == 'ideas'}" do %>
+              <%= bpa_icon("bulb", size: 20) %>
+              <span>Ideas</span>
+            <% end %>
+
+            <%= link_to tasks_path, class: "bpa-nav-item #{'is-active' if @active_tab == 'tareas'}" do %>
+              <%= bpa_icon("check", size: 20) %>
+              <span>Tareas</span>
+            <% end %>
+
+            <%= link_to finances_path, class: "bpa-nav-item #{'is-active' if @active_tab == 'finanzas'}" do %>
+              <%= bpa_icon("wallet", size: 20) %>
+              <span>Dinero</span>
+            <% end %>
+          </nav>
+
+          <div class="bpa-week-card">
+            <div class="bpa-week-header">
+              <span>Tu semana</span>
+              <span><%= @weekly_progress_percent %>%</span>
+            </div>
+            <div class="bpa-week-track">
+              <div class="bpa-week-fill" style="width: <%= @weekly_progress_percent %>%;"></div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Área Principal -->
+        <section class="bpa-main">
+          <% unless @hide_bitacora_header %>
+            <header class="bpa-header">
+              <div>
+                <p class="bpa-eyebrow"><%= eyebrow_text %></p>
+                <h1 class="bpa-title"><%= heading_title %></h1>
+              </div>
+              <div class="bpa-avatar" aria-label="Perfil de <%= @settings.user_name %>">
+                <%= @settings.user_name.first.upcase %>
+              </div>
+            </header>
+          <% end %>
+
+          <div class="bpa-content">
+            <%= yield %>
+          </div>
+
+          <% if %w[ideas tareas finanzas].include?(@active_tab) %>
+            <button
+              type="button"
+              class="bpa-fab"
+              data-action="click->composer#open"
+              data-composer-type="<%= default_composer_type %>"
+              aria-label="Añadir en <%= heading_title %>"
+            >
+              <%= bpa_icon("plus", size: 27) %>
+            </button>
+          <% end %>
+        </section>
+      </div>
+
+      <!-- Barra Inferior Flotante (Móvil) -->
+      <nav class="bpa-mobile-nav" aria-label="Secciones">
+        <%= link_to root_path, class: "bpa-mobile-nav-item #{'is-active' if @active_tab == 'inicio'}" do %>
+          <%= bpa_icon("home", size: 20, stroke_width: @active_tab == "inicio" ? 2.3 : 1.7) %>
+          <span>Hoy</span>
+        <% end %>
+
+        <%= link_to ideas_path, class: "bpa-mobile-nav-item #{'is-active' if @active_tab == 'ideas'}" do %>
+          <%= bpa_icon("bulb", size: 20, stroke_width: @active_tab == "ideas" ? 2.3 : 1.7) %>
+          <span>Ideas</span>
+        <% end %>
+
+        <%= link_to tasks_path, class: "bpa-mobile-nav-item #{'is-active' if @active_tab == 'tareas'}" do %>
+          <%= bpa_icon("check", size: 20, stroke_width: @active_tab == "tareas" ? 2.3 : 1.7) %>
+          <span>Tareas</span>
+        <% end %>
+
+        <%= link_to finances_path, class: "bpa-mobile-nav-item #{'is-active' if @active_tab == 'finanzas'}" do %>
+          <%= bpa_icon("wallet", size: 20, stroke_width: @active_tab == "finanzas" ? 2.3 : 1.7) %>
+          <span>Dinero</span>
+        <% end %>
+      </nav>
+
+      <!-- Modal Composer (Ideas / Tareas / Dinero + Dictado por Voz) -->
+      <div
+        class="bpa-composer-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Capturar"
+        hidden
+        data-composer-target="modal"
+        data-action="click->composer#backdropClose"
+      >
+        <%= form_with url: entries_path, method: :post, class: "bpa-composer-dialog" do %>
+          <input type="hidden" name="entry_type" value="<%= default_composer_type %>" data-composer-target="typeInput">
+
+          <div class="bpa-composer-top">
+            <div class="bpa-composer-types">
+              <button
+                type="button"
+                class="bpa-type-btn is-active"
+                data-type="ideas"
+                data-composer-target="typeButton"
+                data-action="click->composer#switchType"
+                aria-label="Nueva idea"
+                style="background: #eeeaf8;"
+              >
+                <%= bpa_icon("bulb", size: 20) %>
+              </button>
+
+              <button
+                type="button"
+                class="bpa-type-btn"
+                data-type="tasks"
+                data-composer-target="typeButton"
+                data-action="click->composer#switchType"
+                aria-label="Nueva tarea"
+              >
+                <%= bpa_icon("check", size: 20) %>
+              </button>
+
+              <button
+                type="button"
+                class="bpa-type-btn"
+                data-type="money"
+                data-composer-target="typeButton"
+                data-action="click->composer#switchType"
+                aria-label="Nuevo gasto"
+              >
+                <%= bpa_icon("wallet", size: 20) %>
+              </button>
+            </div>
+
+            <div class="bpa-composer-actions-right">
+              <button
+                type="button"
+                class="bpa-mic-btn"
+                data-composer-target="micButton"
+                data-action="click->composer#toggleDictation"
+                title="Dictar con micrófono"
+                aria-label="Dictar con micrófono"
+              >
+                <%= bpa_icon("mic", size: 18) %>
+              </button>
+
+              <button
+                type="button"
+                class="bpa-close-btn"
+                data-action="click->composer#close"
+                aria-label="Cerrar"
+              >
+                <%= bpa_icon("close", size: 19) %>
+              </button>
+            </div>
+          </div>
+
+          <label class="bpa-composer-label-block">
+            <span class="bpa-composer-kicker" data-composer-target="label">Nueva idea</span>
+            <input
+              type="text"
+              name="title"
+              autocomplete="off"
+              placeholder="¿Qué estás pensando?"
+              class="bpa-composer-title-input"
+              data-composer-target="titleInput"
+              data-action="input->composer#syncSubmitState"
+            >
+          </label>
+
+          <label class="bpa-composer-amount-box" hidden data-composer-target="amountWrapper">
+            <span class="bpa-composer-currency">€</span>
+            <input
+              type="text"
+              name="amount"
+              inputmode="decimal"
+              placeholder="0,00"
+              class="bpa-composer-amount-input"
+              data-composer-target="amountInput"
+            >
+          </label>
+
+          <button
+            type="submit"
+            disabled
+            class="bpa-composer-submit"
+            data-composer-target="submitButton"
+          >
+            <span>Guardar</span>
+            <%= bpa_icon("arrow", size: 18) %>
+          </button>
+        <% end %>
+      </div>
+    </main>
+  </body>
+</html>

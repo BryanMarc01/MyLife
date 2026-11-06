@@ -1,0 +1,39 @@
+<div class="aml-proposal-card" id="capture-proposal-card">
+  <div class="aml-proposal-origin">
+    <img src="/assets/figma/sparkles-16.svg" alt="" class="aml-svg">
+    <p class="aml-proposal-origin-text">Te proponemos automáticamente</p>
+  </div>
+
+  <div class="aml-form-field" style="width: 100%;">
+    <label class="aml-field-label" for="proposal-title-input">Título de la idea (editable)</label>
+    <input
+      id="proposal-title-input"
+      type="text"
+      value="<%= proposal.title %>"
+      placeholder="Se sugerirá automáticamente al hablar o escribir…"
+      class="aml-proposal-title-input"
+      data-capture-target="proposalTitle"
+      data-action="input->capture#syncCustomTitle"
+    >
+  </div>
+
+  <div class="aml-tag-row">
+    <button type="button" class="aml-tag-pill aml-tag-pill--interactive" data-action="click->capture#cycleCategory" title="Pulsa para cambiar entre Proyectos, Personal y Vida diaria">
+      <span class="aml-tag-pill-text" data-capture-target="proposalCategory"><%= proposal.category %></span>
+    </button>
+    <div class="aml-tag-pill">
+      <span class="aml-tag-pill-text"><%= proposal.status_tag %></span>
+    </div>
+    <span class="aml-tag-hint">(Haz clic en la categoría para cambiarla)</span>
+  </div>
+
+  <p class="aml-proposal-step" data-capture-target="proposalStep">
+    <%= proposal.first_step %>
+  </p>
+
+  <ul class="aml-preview-steps-list" data-capture-target="proposalStepsList">
+    <% proposal.steps.each do |step| %>
+      <li class="aml-preview-step-item">• <%= step %></li>
+    <% end %>
+  </ul>
+</div>

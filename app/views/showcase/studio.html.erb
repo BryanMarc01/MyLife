@@ -1,0 +1,58 @@
+<% content_for :title, "Vista Estudio · 8 Pantallas Figma — AppMyLife" %>
+
+<div class="aml-studio-wrapper">
+  <div class="aml-studio-intro">
+    <h1>Sistema completo AppMyLife · Ruby on Rails 8 + Hotwire</h1>
+    <p>Haz clic en cualquier pantalla para abrir su flujo interactivo completo o interactúa directamente desde aquí.</p>
+  </div>
+
+  <div class="aml-studio-phones-grid">
+    <div class="aml-studio-item">
+      <div class="aml-studio-item-header">
+        <span>01 · Inicio · Tu día, más ligero</span>
+        <%= link_to "Abrir pantalla →", root_path %>
+      </div>
+      <iframe src="<%= root_path(embed: 1) %>" class="aml-studio-iframe" title="Inicio"></iframe>
+    </div>
+
+    <div class="aml-studio-item">
+      <div class="aml-studio-item-header">
+        <span>02 · Captura · De voz a idea</span>
+        <%= link_to "Abrir pantalla →", new_capture_path %>
+      </div>
+      <iframe src="<%= new_capture_path(embed: 1) %>" class="aml-studio-iframe" title="Captura"></iframe>
+    </div>
+
+    <div class="aml-studio-item">
+      <div class="aml-studio-item-header">
+        <span>03 · Ideas · Tu biblioteca</span>
+        <%= link_to "Abrir pantalla →", ideas_path %>
+      </div>
+      <iframe src="<%= ideas_path(embed: 1) %>" class="aml-studio-iframe" title="Biblioteca de ideas"></iframe>
+    </div>
+
+    <div class="aml-studio-item">
+      <div class="aml-studio-item-header">
+        <span>04 · Idea · Newsletter de paseos</span>
+        <%= link_to "Abrir pantalla →", idea_path(@newsletter_idea || 1) %>
+      </div>
+      <iframe src="<%= idea_path(@newsletter_idea || 1, embed: 1) %>" class="aml-studio-iframe" title="Detalle de idea"></iframe>
+    </div>
+
+    <div class="aml-studio-item">
+      <div class="aml-studio-item-header">
+        <span>05 · Finanzas · Noviembre en claro</span>
+        <%= link_to "Abrir pantalla →", finances_path %>
+      </div>
+      <iframe src="<%= finances_path(embed: 1) %>" class="aml-studio-iframe" title="Finanzas"></iframe>
+    </div>
+
+    <div class="aml-studio-item">
+      <div class="aml-studio-item-header">
+        <span>06 · Automatizaciones · Tú decides</span>
+        <%= link_to "Abrir pantalla →", automation_rules_path %>
+      </div>
+      <iframe src="<%= automation_rules_path(embed: 1) %>" class="aml-studio-iframe" title="Automatizaciones"></iframe>
+    </div>
+  </div>
+</div>

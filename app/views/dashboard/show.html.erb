@@ -1,0 +1,74 @@
+<% content_for :title, "AppMyLife" %>
+
+<div class="bpa-today-grid">
+  <!-- Tarjeta Principal de Captura -->
+  <section class="bpa-hero-card">
+    <div class="bpa-hero-circle-lg"></div>
+    <div class="bpa-hero-circle-sm"></div>
+
+    <div class="bpa-hero-inner">
+      <div class="bpa-hero-badge">
+        <img src="/appmylife-mark.png" alt="" class="bpa-hero-badge-img">
+      </div>
+
+      <div>
+        <p class="bpa-hero-headline">
+          Una chispa. Todo en orden.
+        </p>
+
+        <button
+          type="button"
+          class="bpa-capture-pill-btn"
+          data-action="click->composer#open"
+          data-composer-type="ideas"
+        >
+          <span>Capturar</span>
+          <span class="bpa-capture-pill-plus">
+            <%= bpa_icon("plus", size: 16) %>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Columna Derecha: Tareas y Dinero -->
+  <div class="bpa-today-side">
+    <%= link_to tasks_path, class: "bpa-stat-card" do %>
+      <div class="bpa-stat-top">
+        <span class="bpa-icon-purple"><%= bpa_icon("check") %></span>
+        <span class="bpa-icon-muted"><%= bpa_icon("arrow", size: 19) %></span>
+      </div>
+      <div class="bpa-stat-bottom">
+        <strong class="bpa-stat-number-xl"><%= @pending_tasks_count %></strong>
+        <span class="bpa-stat-label">por hacer</span>
+      </div>
+    <% end %>
+
+    <%= link_to finances_path, class: "bpa-stat-card" do %>
+      <div class="bpa-stat-top">
+        <span class="bpa-icon-purple"><%= bpa_icon("wallet") %></span>
+        <span class="bpa-icon-muted"><%= bpa_icon("arrow", size: 19) %></span>
+      </div>
+      <div class="bpa-stat-bottom">
+        <strong class="bpa-stat-number-lg"><%= format_bpa_money(@net_balance_cents) %></strong>
+        <span class="bpa-stat-label">movimientos</span>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Fila Inferior: Ideas -->
+  <%= link_to ideas_path, class: "bpa-ideas-banner" do %>
+    <span class="bpa-ideas-banner-left">
+      <span class="bpa-ideas-banner-icon">
+        <%= bpa_icon("bulb") %>
+      </span>
+      <span>
+        <strong class="bpa-ideas-banner-title"><%= @first_idea&.title || "Tu próxima gran idea" %></strong>
+        <small class="bpa-ideas-banner-sub"><%= @ideas_count %> ideas a salvo</small>
+      </span>
+    </span>
+    <span class="bpa-icon-muted">
+      <%= bpa_icon("arrow") %>
+    </span>
+  <% end %>
+</div>

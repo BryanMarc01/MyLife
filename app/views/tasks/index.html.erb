@@ -1,0 +1,47 @@
+<% content_for :title, "Tareas — AppMyLife" %>
+
+<% if @tasks.any? %>
+  <div class="bpa-list-card">
+    <% @tasks.each do |task| %>
+      <div class="bpa-task-row">
+        <%= button_to toggle_task_path(task),
+              method: :patch,
+              class: "bpa-task-check #{task.completed? ? 'is-done' : ''}",
+              aria: { label: task.completed? ? "Marcar pendiente" : "Completar tarea" },
+              form: { class: "bpa-inline-form" } do %>
+          <% if task.completed? %>
+            <%= bpa_icon("check", size: 16, stroke_width: 2.5) %>
+          <% end %>
+        <% end %>
+
+        <span class="bpa-task-title <%= 'is-done' if task.completed? %>">
+          <%= task.description %>
+        </span>
+
+        <%= button_to task_path(task),
+              method: :delete,
+              class: "bpa-row-trash-btn",
+              aria: { label: "Eliminar tarea" },
+              form: { class: "bpa-inline-form" } do %>
+          <%= bpa_icon("trash", size: 17) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div
+    class="bpa-empty-state"
+    role="button"
+    tabindex="0"
+    data-action="click->composer#open"
+    data-composer-type="tasks"
+  >
+    <div>
+      <span class="bpa-empty-icon-box" style="background: #e8e1f3;">
+        <%= bpa_icon("check", size: 28) %>
+      </span>
+      <p class="bpa-empty-title">Todo despejado</p>
+      <p class="bpa-empty-sub">Toca + cuando aparezca algo.</p>
+    </div>
+  </div>
+<% end %>

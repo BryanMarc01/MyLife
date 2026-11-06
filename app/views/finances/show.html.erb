@@ -1,0 +1,51 @@
+<% content_for :title, "Dinero — AppMyLife" %>
+
+<div class="bpa-money-grid">
+  <!-- Tarjeta Morada de Balance -->
+  <div class="bpa-money-balance-card">
+    <span class="bpa-money-wallet-icon">
+      <%= bpa_icon("wallet") %>
+    </span>
+    <p class="bpa-money-balance-label">Balance registrado</p>
+    <strong class="bpa-money-balance-amount"><%= format_bpa_money(@net_balance_cents) %></strong>
+  </div>
+
+  <!-- Lista de Movimientos o Estado Vacío -->
+  <% if @movements.any? %>
+    <div class="bpa-list-card">
+      <% @movements.each do |mov| %>
+        <% signed_cents = mov.kind == "income" ? mov.amount_cents : -mov.amount_cents %>
+        <div class="bpa-money-row">
+          <span class="bpa-money-arrow-box">
+            <%= bpa_icon("arrow", size: 17) %>
+          </span>
+          <span class="bpa-money-title"><%= mov.concept %></span>
+          <strong class="bpa-money-amount"><%= format_bpa_money(signed_cents) %></strong>
+          <%= button_to transaction_finances_path(mov),
+                method: :delete,
+                class: "bpa-money-trash-btn",
+                aria: { label: "Eliminar movimiento" },
+                form: { class: "bpa-inline-form" } do %>
+            <%= bpa_icon("trash", size: 16) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div
+      class="bpa-empty-state"
+      role="button"
+      tabindex="0"
+      data-action="click->composer#open"
+      data-composer-type="money"
+    >
+      <div>
+        <span class="bpa-empty-icon-box" style="background: #f3f0f8;">
+          <%= bpa_icon("wallet", size: 28) %>
+        </span>
+        <p class="bpa-empty-title">Todo despejado</p>
+        <p class="bpa-empty-sub">Toca + cuando aparezca algo.</p>
+      </div>
+    </div>
+  <% end %>
+</div>

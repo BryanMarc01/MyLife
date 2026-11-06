@@ -1,0 +1,33 @@
+<% active = local_assigns[:active] || @active_tab || "inicio" %>
+<nav class="aml-bottom-nav" data-name="Navegación principal" aria-label="Navegación principal">
+  <%= link_to root_path, class: "aml-nav-item #{'is-active' if active == 'inicio'}" do %>
+    <div class="aml-nav-pill <%= 'is-active' if active == 'inicio' %>">
+      <img src="/assets/figma/<%= active == 'inicio' ? 'house-active.svg' : 'house-inactive.svg' %>" alt="" class="aml-svg">
+    </div>
+    <span class="aml-nav-label <%= 'is-active' if active == 'inicio' %>">Inicio</span>
+  <% end %>
+
+  <%= link_to ideas_path, class: "aml-nav-item #{'is-active' if active == 'ideas'}" do %>
+    <div class="aml-nav-pill <%= 'is-active' if active == 'ideas' %>">
+      <img src="/assets/figma/<%= active == 'ideas' ? 'lightbulb-active.svg' : 'lightbulb-inactive.svg' %>" alt="" class="aml-svg">
+    </div>
+    <span class="aml-nav-label <%= 'is-active' if active == 'ideas' %>">Ideas</span>
+  <% end %>
+
+  <%= link_to finances_path, class: "aml-nav-item #{'is-active' if active == 'finanzas'}" do %>
+    <div class="aml-nav-pill <%= 'is-active' if active == 'finanzas' %>">
+      <img src="/assets/figma/<%= active == 'finanzas' ? 'chart-active.svg' : 'chart-inactive.svg' %>" alt="" class="aml-svg">
+    </div>
+    <span class="aml-nav-label <%= 'is-active' if active == 'finanzas' %>">Finanzas</span>
+  <% end %>
+
+  <%= link_to automation_rules_path, class: "aml-nav-item #{'is-active' if active == 'reglas'}" do %>
+    <div class="aml-nav-pill <%= 'is-active' if active == 'reglas' %>">
+      <img src="/assets/figma/<%= active == 'reglas' ? 'workflow-active.svg' : 'workflow-inactive.svg' %>" alt="" class="aml-svg">
+    </div>
+    <span class="aml-nav-label <%= 'is-active' if active == 'reglas' %>">Reglas</span>
+  <% end %>
+</nav>
+<div class="aml-home-indicator-area <%= local_assigns[:bg_surface] ? 'aml-home-indicator-area--surface' : '' %>" data-name="Área de inicio">
+  <div class="aml-home-indicator" data-name="Indicador de inicio"></div>
+</div>

@@ -1,0 +1,122 @@
+<% content_for :title, "Captura · De voz a idea — AppMyLife" %>
+
+<div class="aml-page aml-page--narrow" data-controller="capture" data-capture-preview-url-value="<%= preview_captures_path %>">
+  <%= form_with url: captures_path, method: :post, class: "aml-capture-form-card" do %>
+    <input type="hidden" name="transcript" value="<%= @transcript %>" data-capture-target="transcriptInput">
+    <input type="hidden" name="title" value="<%= @proposal.title %>" data-capture-target="titleInput">
+    <input type="hidden" name="category" value="<%= @proposal.category %>" data-capture-target="categoryInput">
+    <input type="hidden" name="status_tag" value="<%= @proposal.status_tag %>">
+    <input type="hidden" name="duration_seconds" value="<%= @duration_seconds %>" data-capture-target="durationInput">
+    <input type="hidden" name="source_kind" value="<%= @mode == 'note' ? 'Nota rápida' : 'Nota de voz' %>">
+    <input type="hidden" name="audio_data" value="" data-capture-target="audioDataInput">
+
+    <!-- Controles superiores -->
+    <div class="aml-capture-topbar">
+      <%= link_to "← Volver", root_path, class: "aml-capture-cancel" %>
+      <p class="aml-capture-mode"><%= @mode == "note" ? "Nota rápida" : "Captura por voz" %></p>
+      <button
+        type="button"
+        class="aml-transcript-edit-btn"
+        data-example-text="Podría crear una newsletter de paseos por Madrid. Una ruta corta, un café y una librería cada viernes. Empezar por Malasaña."
+        data-action="click->capture#loadExample"
+      >
+        Cargar ejemplo
+      </button>
+    </div>
+
+    <!-- Panel de Grabación de Voz Real -->
+    <div class="aml-recording-panel">
+      <div class="aml-tag-pill">
+        <span class="aml-tag-pill-text" data-capture-target="statusBadge">
+          <%= @mode == "note" ? "Modo escritura directa" : "Listo para grabar" %>
+        </span>
+      </div>
+
+      <h1 class="aml-recording-headline">
+        Una chispa.<br>
+        Ya tiene forma.
+      </h1>
+
+      <p class="aml-mic-hint" data-capture-target="micHint">
+        Pulsa «Iniciar grabación por voz» para usar tu micrófono real o escribe directamente abajo.
+      </p>
+
+      <!-- Forma de onda (se mueve con el micrófono real) -->
+      <div class="aml-waveform" data-capture-target="waveform">
+        <% [8, 14, 23, 12, 30, 40, 25, 18, 36, 48, 30, 20, 43, 28, 18, 34, 44, 24].each do |h| %>
+          <div class="aml-wave-bar aml-wave-bar--active" style="height: <%= h %>px;" data-capture-target="bar"></div>
+        <% end %>
+        <% [12, 21, 32, 16, 9].each do |h| %>
+          <div class="aml-wave-bar aml-wave-bar--muted" style="height: <%= h %>px;" data-capture-target="bar"></div>
+        <% end %>
+      </div>
+
+      <div class="aml-audio-controls">
+        <button type="button" class="aml-play-round-btn" data-action="click->capture#playPreview" title="Escuchar grabación o lectura">
+          <img src="/assets/figma/play-purple.svg" alt="Reproducir" class="aml-svg">
+          <span>Escuchar</span>
+        </button>
+
+        <p class="aml-audio-duration" data-capture-target="timer">00:00</p>
+
+        <button type="button" class="aml-record-trigger-btn" data-action="click->capture#toggleRecording" data-capture-target="recordButton">
+          <img src="/assets/figma/mic-purple.svg" alt="" class="aml-svg">
+          <span>Iniciar grabación por voz</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Transcripción editable en tiempo real -->
+    <div class="aml-transcript-block">
+      <div class="aml-transcript-header">
+        <label class="aml-transcript-kicker" for="capture-transcript-textarea">LO QUE HAS DICHO / ESCRITO</label>
+        <div class="aml-quick-examples">
+          <button
+            type="button"
+            class="aml-chip-mini"
+            data-example-text="Quiero organizar una cena con cinco recetas sencillas para toda la semana y dejar lista la compra."
+            data-action="click->capture#loadExample"
+          >
+            Ej: Menú semanal
+          </button>
+          <button
+            type="button"
+            class="aml-chip-mini"
+            data-example-text="Montar un rincón de lectura junto a la ventana con una lámpara cálida y sin pantallas."
+            data-action="click->capture#loadExample"
+          >
+            Ej: Rincón lectura
+          </button>
+        </div>
+      </div>
+
+      <textarea
+        id="capture-transcript-textarea"
+        class="aml-transcript-textarea"
+        rows="3"
+        data-capture-target="transcriptEditor"
+        data-action="input->capture#updateTranscript"
+        placeholder="Habla con el micrófono o escribe tu idea aquí…"
+      ><%= @transcript.gsub(/[«»]/, "") %></textarea>
+    </div>
+
+    <!-- Propuesta de organización generada en vivo -->
+    <%= render "captures/proposal_card", proposal: @proposal, transcript: @transcript %>
+
+    <label class="aml-checkbox-inline">
+      <input type="checkbox" name="featured_today" value="1">
+      <span>Destacar esta idea en Inicio como «Para retomar hoy»</span>
+    </label>
+
+    <!-- Confirmación -->
+    <div class="aml-confirm-block">
+      <button type="submit" class="aml-primary-action-btn">
+        <img src="/assets/figma/check-white.svg" alt="" class="aml-svg">
+        <span class="aml-primary-action-text">Guardar y organizar en mi biblioteca</span>
+      </button>
+      <div class="aml-confirm-disclaimer">
+        <p>Nada se guarda hasta que confirmes. Podrás editar o cambiar la categoría y los pasos después.</p>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,41 @@
+<% content_for :title, "Ideas — AppMyLife" %>
+
+<% if @ideas.any? %>
+  <div class="bpa-entries-grid">
+    <% @ideas.each do |idea| %>
+      <article class="bpa-entry-card">
+        <span class="bpa-icon-purple">
+          <%= bpa_icon("bulb", size: 21) %>
+        </span>
+
+        <%= link_to idea_path(idea), class: "bpa-entry-title-link" do %>
+          <p class="bpa-entry-title"><%= idea.title %></p>
+        <% end %>
+
+        <%= button_to idea_path(idea),
+              method: :delete,
+              class: "bpa-entry-trash-btn",
+              aria: { label: "Eliminar idea" },
+              form: { class: "bpa-inline-delete-form" } do %>
+          <%= bpa_icon("trash", size: 16) %>
+        <% end %>
+      </article>
+    <% end %>
+  </div>
+<% else %>
+  <div
+    class="bpa-empty-state"
+    role="button"
+    tabindex="0"
+    data-action="click->composer#open"
+    data-composer-type="ideas"
+  >
+    <div>
+      <span class="bpa-empty-icon-box" style="background: #eeeaf8;">
+        <%= bpa_icon("bulb", size: 28) %>
+      </span>
+      <p class="bpa-empty-title">Todo despejado</p>
+      <p class="bpa-empty-sub">Toca + cuando aparezca algo.</p>
+    </div>
+  </div>
+<% end %>

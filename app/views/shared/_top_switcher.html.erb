@@ -1,0 +1,22 @@
+<header class="aml-dock" aria-label="Selector de vistas AppMyLife">
+  <div class="aml-dock-inner">
+    <a href="<%= root_path %>" class="aml-dock-brand">
+      <img src="/assets/figma/simbolo-appmylife-32.svg" alt="AppMyLife" class="aml-svg">
+      <span>AppMyLife</span>
+      <span class="aml-dock-badge">Rails 8 · Hotwire</span>
+    </a>
+
+    <nav class="aml-dock-links">
+      <%= link_to "Inicio", root_path, class: "aml-dock-link #{'is-active' if @active_tab == 'inicio'}" %>
+      <%= link_to "Captura", new_capture_path, class: "aml-dock-link #{'is-active' if @active_tab == 'captura'}" %>
+      <%= link_to "Biblioteca", ideas_path, class: "aml-dock-link #{'is-active' if @active_tab == 'ideas' && action_name == 'index'}" %>
+      <%= link_to "Detalle Idea", idea_path(Idea.find_by(title: 'Newsletter de paseos') || Idea.first || 1), class: "aml-dock-link #{'is-active' if @active_tab == 'ideas' && action_name == 'show'}" %>
+      <%= link_to "Finanzas", finances_path, class: "aml-dock-link #{'is-active' if @active_tab == 'finanzas'}" %>
+      <%= link_to "Reglas", automation_rules_path, class: "aml-dock-link #{'is-active' if @active_tab == 'reglas'}" %>
+      <span class="aml-dock-divider"></span>
+      <%= link_to "Widgets iOS", widgets_showcase_path, class: "aml-dock-link #{'is-active' if @active_tab == 'widgets'}" %>
+      <%= link_to "Identidad", identity_showcase_path, class: "aml-dock-link #{'is-active' if @active_tab == 'identity'}" %>
+      <%= link_to "Vista Estudio (8 pantallas)", studio_showcase_path, class: "aml-dock-link aml-dock-link--accent #{'is-active' if @active_tab == 'studio'}" %>
+    </nav>
+  </div>
+</header>

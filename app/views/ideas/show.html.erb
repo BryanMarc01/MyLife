@@ -1,0 +1,149 @@
+<% content_for :title, "Idea · #{@idea.title} — AppMyLife" %>
+
+<div class="aml-page" data-controller="audio-drawer" data-audio-drawer-transcript-value="<%= @idea.transcript.presence || @idea.essential_summary %>" data-audio-drawer-duration-value="<%= @idea.duration_seconds || 18 %>">
+  <!-- Barra de navegación de detalle -->
+  <div class="aml-detail-topbar">
+    <%= link_to ideas_path, class: "aml-back-link" do %>
+      <img src="/assets/figma/chevron-left-purple.svg" alt="" class="aml-svg">
+      <span class="aml-back-link-text">Volver a Biblioteca de Ideas</span>
+    <% end %>
+
+    <div class="aml-detail-actions">
+      <% unless @idea.featured_today? %>
+        <%= button_to "Destacar para hoy", feature_idea_path(@idea), method: :patch, class: "aml-secondary-btn-small" %>
+      <% else %>
+        <span class="aml-mini-badge-today">★ Destacada para retomar hoy</span>
+      <% end %>
+
+      <%= button_to "Eliminar idea", idea_path(@idea), method: :delete, class: "aml-danger-btn-small", form: { data: { turbo_confirm: "¿Seguro que quieres eliminar esta idea?" } } %>
+    </div>
+  </div>
+
+  <div class="aml-dashboard-grid">
+    <!-- Columna Izquierda: Idea + Resumen + Audio Original + Edición -->
+    <div class="aml-dashboard-col">
+      <section class="aml-card-surface aml-content--gap-24" style="min-height: auto;">
+        <div class="aml-context-block">
+          <h1 class="aml-idea-detail-title"><%= @idea.title %></h1>
+
+          <div class="aml-tag-row" style="margin-top: 8px;">
+            <div class="aml-tag-pill">
+              <span class="aml-tag-pill-text"><%= @idea.category %></span>
+            </div>
+            <div class="aml-tag-pill">
+              <span class="aml-tag-pill-text"><%= @idea.status_tag %></span>
+            </div>
+          </div>
+
+          <p class="aml-origin-meta">
+            <%= @idea.captured_meta.presence || "6 nov, 9:41 · Capturada por voz · 18 s" %>
+          </p>
+        </div>
+
+        <!-- Resumen automático LO ESENCIAL -->
+        <div class="aml-essential-block">
+          <div class="aml-essential-kicker">
+            <img src="/assets/figma/sparkles-16.svg" alt="" class="aml-svg">
+            <p class="aml-essential-kicker-text">LO ESENCIAL</p>
+          </div>
+
+          <p class="aml-essential-body">
+            <%= @idea.essential_summary.presence || @idea.summary %>
+          </p>
+        </div>
+
+        <!-- Reproductor de Audio Original / Transcripción -->
+        <div class="aml-original-audio-wrapper">
+          <div class="aml-original-audio-card" data-action="click->audio-drawer#toggle" role="button" tabindex="0">
+            <button type="button" class="aml-audio-play-orb" data-action="click->audio-drawer#playAudio" title="Escuchar idea en voz alta">
+              <img src="/assets/figma/play-17.svg" alt="Reproducir" class="aml-svg">
+            </button>
+
+            <div class="aml-audio-info">
+              <p class="aml-audio-info-title">Tu idea, tal como sonó</p>
+              <p class="aml-audio-info-sub" data-audio-drawer-target="sublabel">
+                <%= @idea.duration_seconds || 18 %> s · Pulsa ▶ para escuchar o aquí para ver transcripción
+              </p>
+            </div>
+
+            <img src="/assets/figma/chevron-down.svg" alt="" class="aml-svg">
+          </div>
+
+          <div class="aml-audio-transcript-drawer" data-audio-drawer-target="panel">
+            <% if @idea.audio_data.present? %>
+              <audio controls src="<%= @idea.audio_data %>" class="aml-real-audio-element" data-audio-drawer-target="audioPlayer"></audio>
+            <% end %>
+            <p class="aml-transcript-kicker" style="margin-bottom: 6px;">TRANSCRIPCIÓN ORIGINAL</p>
+            <p class="aml-audio-transcript-quote"><%= @idea.transcript.presence || "«#{@idea.summary}»" %></p>
+          </div>
+        </div>
+
+        <!-- Formulario para editar detalles de la idea -->
+        <details class="aml-edit-details">
+          <summary class="aml-edit-summary-trigger">Editar título, categoría o resumen de esta idea</summary>
+          <%= form_with model: @idea, url: idea_path(@idea), method: :patch, class: "aml-inline-form-card", style: "margin-top: 12px;" do |f| %>
+            <label class="aml-field-label">Título</label>
+            <%= f.text_field :title, class: "aml-inline-input", required: true %>
+
+            <div class="aml-inline-form-row">
+              <div style="flex: 1;">
+                <label class="aml-field-label">Categoría</label>
+                <%= f.select :category, Idea::CATEGORIES, {}, class: "aml-inline-select" %>
+              </div>
+              <div style="flex: 1;">
+                <label class="aml-field-label">Estado</label>
+                <%= f.select :status_tag, ["Por explorar", "En marcha", "Completada"], {}, class: "aml-inline-select" %>
+              </div>
+            </div>
+
+            <label class="aml-field-label">Resumen esencial</label>
+            <%= f.text_area :essential_summary, rows: 3, class: "aml-transcript-textarea" %>
+
+            <button type="submit" class="aml-inline-submit-btn" style="align-self: flex-end;">Guardar cambios</button>
+          <% end %>
+        </details>
+      </section>
+    </div>
+
+    <!-- Columna Derecha: Próximos pasos interactivos -->
+    <div class="aml-dashboard-col">
+      <section class="aml-card-surface aml-next-steps-block">
+        <div class="aml-next-steps-header">
+          <h2 class="aml-section-title">Dale un primer paso</h2>
+          <p class="aml-suggestions-kicker">SUGERENCIAS Y TAREAS (<%= @idea.idea_steps.count(&:completed?) %>/<%= @idea.idea_steps.size %>)</p>
+        </div>
+
+        <div class="aml-steps-checklist">
+          <% @idea.idea_steps.each do |step| %>
+            <div class="aml-step-row">
+              <%= button_to toggle_idea_step_path(step), method: :patch, class: "aml-checkbox-btn #{'is-checked' if step.completed?}", title: "Marcar o desmarcar paso" do %>
+                <% if step.completed? %>
+                  <img src="/assets/figma/check-purple.svg" alt="Completado" class="aml-svg">
+                <% end %>
+              <% end %>
+              <p class="aml-step-text <%= 'is-completed' if step.completed? %>"><%= step.description %></p>
+              <%= button_to "×", idea_step_path(step), method: :delete, class: "aml-step-delete-btn", title: "Eliminar paso" %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Añadir un nuevo paso a esta idea -->
+        <%= form_with url: idea_idea_steps_path(@idea), method: :post, class: "aml-add-step-form" do %>
+          <input type="text" name="description" placeholder="Añadir otro paso concreto (ej. Llamar el viernes)…" required class="aml-inline-input">
+          <button type="submit" class="aml-inline-submit-btn">+ Añadir paso</button>
+        <% end %>
+
+        <%= button_to confirm_steps_idea_path(@idea), method: :patch, class: "aml-soft-action-btn #{'is-confirmed' if @idea.steps_confirmed?}" do %>
+          <img src="/assets/figma/check-purple.svg" alt="" class="aml-svg">
+          <span class="aml-soft-action-text">
+            <%= @idea.steps_confirmed? ? "Pasos confirmados en tus tareas" : "Confirmar estos #{@idea.idea_steps.size} pasos" %>
+          </span>
+        <% end %>
+
+        <p class="aml-steps-pending-note">
+          <%= @idea.steps_confirmed? ? "✓ Todos los pasos están confirmados y activos en tu plan." : "Aún no se han añadido a tus tareas definitivas. Marca cada casilla o confirma el bloque." %>
+        </p>
+      </section>
+    </div>
+  </div>
+</div>
