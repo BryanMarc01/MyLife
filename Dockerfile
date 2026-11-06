@@ -28,8 +28,11 @@ RUN bundle install && \
 
 COPY . .
 
+RUN chmod +x bin/* && \
+    sed -i 's/\r$//' bin/*
+
 RUN bundle exec bootsnap precompile app/ lib/
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec ruby bin/rails assets:precompile
 
 FROM base
 
