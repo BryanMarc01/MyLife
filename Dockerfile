@@ -29,10 +29,11 @@ RUN bundle install && \
 COPY . .
 
 RUN chmod +x bin/* && \
-    sed -i 's/\r$//' bin/*
+    sed -i 's/\r$//' bin/* && \
+    sed -i 's/ruby\.exe/ruby/g' bin/*
 
 RUN bundle exec bootsnap precompile app/ lib/
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec ruby bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 FROM base
 
@@ -48,4 +49,4 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 ENV PORT="3000"
 EXPOSE 3000
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
