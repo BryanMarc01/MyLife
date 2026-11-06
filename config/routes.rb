@@ -3,6 +3,13 @@ Rails.application.routes.draw do
 
   root "dashboard#show"
 
+  get "login", to: "sessions#new", as: :login
+  post "login", to: "sessions#create"
+  delete "logout", to: "sessions#destroy", as: :logout
+
+  get "signup", to: "registrations#new", as: :signup
+  post "signup", to: "registrations#create"
+
   resources :entries, only: [:create]
   resources :tasks, only: [:index, :create, :destroy] do
     member do

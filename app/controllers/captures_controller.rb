@@ -5,7 +5,7 @@ class CapturesController < ApplicationController
     @transcript = params[:transcript].presence || ""
     @proposal = IdeaOrganizerService.propose(@transcript)
     @duration_seconds = (params[:duration_seconds] || 0).to_i
-    @voice_rule_active = AutomationRule.find_by(title: "De voz a idea")&.active? != false
+    @voice_rule_active = current_user.automation_rules.find_by(title: "De voz a idea")&.active? != false
   end
 
   def preview
@@ -33,12 +33,12 @@ class CapturesController < ApplicationController
     duration = (params[:duration_seconds].presence || 18).to_i
     source_kind = params[:source_kind].presence || "Nota de voz"
 
-    Idea.update_all("position = position + 1")
+    current_user.ideas.update_all("position = position + 1")
 
     now_str = Time.current.strftime("%-d nov, %H:%M")
     meta_str = source_kind == "Nota de voz" ? "#{now_str} · Capturada por voz · #{duration} s" : "#{now_str} · Nota rápida"
 
-    idea = Idea.create!(
+    idea = current_user.ideas.create!(
       title: title,
       summary: params[:summary].presence || proposal.summary,
       essential_summary: proposal.essential_summary,
@@ -58,14 +58,14 @@ class CapturesController < ApplicationController
       position: 1
     )
 
-    steps_to_create = if AutomationRule.find_by(title: "Un paso, no una lista infinita")&.active?
+    steps_to_create = if current_user.automation_rules.find_by(title: "Un paso, no una lista infinita")&.active?
       proposal.steps
     else
-      [proposal.steps.first]
+      [proposal.steps.first].compact
     end
 
     steps_to_create.each_with_index do |step_desc, idx|
-      idea.idea_steps.create!(description: step_desc, completed: false, position: idx + 1)
+      idea.idea_steps.create!(user: current_user, description: step_desc, completed: false, position: idx + 1)
     end
 
     redirect_to idea_path(idea), notice: "Idea «#{idea.title}» guardada y organizada."

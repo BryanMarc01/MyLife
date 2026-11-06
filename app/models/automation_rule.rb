@@ -1,4 +1,6 @@
 class AutomationRule < ApplicationRecord
+  belongs_to :user, optional: true
+
   validates :title, presence: true
   validates :trigger_condition, presence: true
   validates :action_result, presence: true

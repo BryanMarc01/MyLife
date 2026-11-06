@@ -1,10 +1,10 @@
 class FinancesController < ApplicationController
   def show
     @active_tab = "finanzas"
-    @settings = UserSetting.current
+    @settings = current_user
     @category_filter = params[:category].presence
-    @transactions = FinancialTransaction.order(position: :asc, created_at: :desc).to_a
-    @finance_summary = FinanceSummaryService.new(@transactions, budget_cents: @settings.monthly_budget_cents)
+    @transactions = current_user.financial_transactions.order(position: :asc, created_at: :desc).to_a
+    @finance_summary = FinanceSummaryService.new(@transactions, budget_cents: current_user.monthly_budget_cents)
     @movements = if @category_filter.present?
       @transactions.select { |t| t.category == @category_filter }
     else
@@ -23,8 +23,8 @@ class FinancesController < ApplicationController
                   when "Otros" then "coffee-17"
                   else "shopping-basket"
                   end
-      FinancialTransaction.update_all("position = position + 1")
-      FinancialTransaction.create!(
+      current_user.financial_transactions.update_all("position = position + 1")
+      current_user.financial_transactions.create!(
         concept: params[:concept].strip,
         category: category,
         kind: kind,
@@ -43,13 +43,13 @@ class FinancesController < ApplicationController
     euros = params[:monthly_budget].to_s.tr(".", "").tr(",", ".").to_f
     cents = (euros * 100).round
     if cents > 0
-      UserSetting.current.update!(monthly_budget_cents: cents)
+      current_user.update!(monthly_budget_cents: cents)
     end
     redirect_to finances_path, notice: "Presupuesto mensual actualizado."
   end
 
   def destroy_transaction
-    tx = FinancialTransaction.find(params[:id])
+    tx = current_user.financial_transactions.find(params[:id])
     tx.destroy!
     redirect_to finances_path, notice: "Movimiento eliminado."
   end

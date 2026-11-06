@@ -2,6 +2,7 @@ class Idea < ApplicationRecord
   CATEGORIES = ["Proyectos", "Personal", "Vida diaria"].freeze
   ICONS = ["route", "book-open", "coffee", "utensils"].freeze
 
+  belongs_to :user, optional: true
   has_many :idea_steps, -> { order(position: :asc, id: :asc) }, dependent: :destroy
 
   validates :title, presence: true

@@ -156,6 +156,216 @@ body.bpa-body {
   transition: width 0.5s ease;
 }
 
+.bpa-sidebar-user {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 8px 0;
+  border-top: 1px solid #efedf4;
+}
+
+.bpa-sidebar-user-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bpa-sidebar-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #211933;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bpa-sidebar-user-email {
+  font-size: 11px;
+  color: #96919f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bpa-logout-btn {
+  border: 1px solid #e7e3ef;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #85818e;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.bpa-logout-btn:hover {
+  background: #eeeaf8;
+  color: #6027ed;
+  border-color: #d8ceed;
+}
+
+.bpa-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bpa-logout-mobile-btn {
+  display: none;
+  border: 1px solid #e7e3ef;
+  border-radius: 9999px;
+  background: #ffffff;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #85818e;
+  cursor: pointer;
+}
+
+/* Auth Shell (Login / Signup) */
+.bpa-auth-shell {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  background: #f8f7fc;
+  padding: 24px;
+}
+
+.bpa-auth-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: 28px;
+  border: 1px solid #e8e4f0;
+  background: #ffffff;
+  padding: 40px 36px;
+  box-shadow: 0 20px 60px rgba(45, 35, 70, 0.06);
+}
+
+.bpa-auth-brand {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bpa-auth-title {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  color: #211933;
+}
+
+.bpa-auth-subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #85818e;
+}
+
+.bpa-auth-alert {
+  margin-bottom: 20px;
+  margin-top: 16px;
+  border-radius: 14px;
+  border: 1px solid #fecdca;
+  background: #fef3f2;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #b42318;
+}
+
+.bpa-auth-notice {
+  margin-bottom: 20px;
+  margin-top: 16px;
+  border-radius: 14px;
+  border: 1px solid #d8ceed;
+  background: #eeeaf8;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6027ed;
+}
+
+.bpa-auth-form {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bpa-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bpa-auth-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #211933;
+}
+
+.bpa-auth-input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid #e7e3ed;
+  background: #f8f7fc;
+  padding: 14px 16px;
+  font-size: 15px;
+  color: #211933;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.bpa-auth-input:focus {
+  border-color: #6027ed;
+  background: #ffffff;
+}
+
+.bpa-auth-submit {
+  margin-top: 8px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 16px;
+  background: #6027ed;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(96, 39, 237, 0.18);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.bpa-auth-submit:hover {
+  background: #5120cc;
+  transform: translateY(-1px);
+}
+
+.bpa-auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: #85818e;
+}
+
+.bpa-auth-link {
+  font-weight: 600;
+  color: #6027ed;
+  text-decoration: none;
+}
+
+.bpa-auth-link:hover {
+  text-decoration: underline;
+}
+
 /* Main Area */
 .bpa-main {
   position: relative;
@@ -948,6 +1158,10 @@ body.bpa-body {
 @media (max-width: 768px) {
   .bpa-sidebar {
     display: none;
+  }
+
+  .bpa-logout-mobile-btn {
+    display: inline-flex;
   }
 
   .bpa-main {

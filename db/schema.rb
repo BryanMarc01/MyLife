@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_06_152000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_06_153500) do
   create_table "automation_rules", force: :cascade do |t|
     t.string "title", null: false
     t.boolean "active", default: true, null: false
@@ -21,6 +21,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_152000) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_automation_rules_on_user_id"
   end
 
   create_table "financial_transactions", force: :cascade do |t|
@@ -34,8 +36,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_152000) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["category"], name: "index_financial_transactions_on_category"
     t.index ["kind"], name: "index_financial_transactions_on_kind"
+    t.index ["user_id"], name: "index_financial_transactions_on_user_id"
   end
 
   create_table "idea_steps", force: :cascade do |t|
@@ -45,7 +49,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_152000) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["idea_id"], name: "index_idea_steps_on_idea_id"
+    t.index ["user_id"], name: "index_idea_steps_on_user_id"
   end
 
   create_table "ideas", force: :cascade do |t|
@@ -68,9 +74,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_152000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "audio_data"
+    t.integer "user_id"
     t.index ["category"], name: "index_ideas_on_category"
     t.index ["featured_today"], name: "index_ideas_on_featured_today"
     t.index ["position"], name: "index_ideas_on_position"
+    t.index ["user_id"], name: "index_ideas_on_user_id"
   end
 
   create_table "user_settings", force: :cascade do |t|
@@ -81,5 +89,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_152000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.integer "monthly_budget_cents", default: 120000, null: false
+    t.boolean "discrete_finance_mode", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
+  add_foreign_key "automation_rules", "users"
+  add_foreign_key "financial_transactions", "users"
   add_foreign_key "idea_steps", "ideas"
+  add_foreign_key "idea_steps", "users"
+  add_foreign_key "ideas", "users"
 end

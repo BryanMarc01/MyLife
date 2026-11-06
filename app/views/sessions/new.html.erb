@@ -1,0 +1,43 @@
+<% content_for :title, "Iniciar sesión — AppMyLife" %>
+
+<p class="bpa-eyebrow">Bitácora personal privada</p>
+<h1 class="bpa-auth-title">Hola de nuevo.</h1>
+<p class="bpa-auth-subtitle">Accede a tus ideas, tareas y finanzas privadas.</p>
+
+<%= form_with url: login_path, method: :post, class: "bpa-auth-form" do %>
+  <div class="bpa-auth-field">
+    <label class="bpa-auth-label" for="login-email">Correo electrónico</label>
+    <input
+      id="login-email"
+      type="email"
+      name="email"
+      value="<%= params[:email] %>"
+      placeholder="tu@correo.com"
+      required
+      autofocus
+      class="bpa-auth-input"
+    >
+  </div>
+
+  <div class="bpa-auth-field">
+    <label class="bpa-auth-label" for="login-password">Contraseña</label>
+    <input
+      id="login-password"
+      type="password"
+      name="password"
+      placeholder="••••••••"
+      required
+      class="bpa-auth-input"
+    >
+  </div>
+
+  <button type="submit" class="bpa-auth-submit">
+    <span>Entrar a mi bitácora</span>
+    <%= bpa_icon("arrow", size: 18) %>
+  </button>
+<% end %>
+
+<p class="bpa-auth-footer">
+  ¿Todavía no tienes cuenta?
+  <%= link_to "Crear cuenta gratis", signup_path, class: "bpa-auth-link" %>
+</p>

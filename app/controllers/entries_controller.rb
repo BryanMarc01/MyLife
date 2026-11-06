@@ -6,10 +6,10 @@ class EntriesController < ApplicationController
 
     case entry_type
     when "tasks"
-      IdeaStep.create!(
+      current_user.idea_steps.create!(
         description: raw_title,
         completed: false,
-        position: IdeaStep.maximum(:position).to_i + 1
+        position: current_user.idea_steps.maximum(:position).to_i + 1
       )
       redirect_to tasks_path
     when "money"
@@ -19,8 +19,8 @@ class EntriesController < ApplicationController
       cents = (numeric.abs * 100).round
       kind = is_positive_explicit ? "income" : "expense"
 
-      FinancialTransaction.update_all("position = position + 1")
-      FinancialTransaction.create!(
+      current_user.financial_transactions.update_all("position = position + 1")
+      current_user.financial_transactions.create!(
         concept: raw_title,
         category: kind == "income" ? "Ingresos" : "Comida",
         kind: kind,
@@ -33,8 +33,8 @@ class EntriesController < ApplicationController
       redirect_to finances_path
     else
       proposal = IdeaOrganizerService.propose(raw_title)
-      Idea.update_all("position = position + 1")
-      Idea.create!(
+      current_user.ideas.update_all("position = position + 1")
+      current_user.ideas.create!(
         title: raw_title,
         summary: proposal.summary,
         essential_summary: proposal.essential_summary,

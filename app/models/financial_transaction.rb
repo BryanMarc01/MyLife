@@ -1,4 +1,6 @@
 class FinancialTransaction < ApplicationRecord
+  belongs_to :user, optional: true
+
   KINDS = ["expense", "income"].freeze
   CATEGORIES = ["Hogar", "Comida", "Transporte", "Otros", "Ingresos"].freeze
 

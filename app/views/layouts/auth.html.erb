@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title><%= content_for(:title) || "AppMyLife · Acceso privado" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Tus ideas. Tus finanzas. Menos esfuerzo.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/appmylife-mark.png" type="image/png">
+    <link rel="apple-touch-icon" href="/appmylife-mark.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bpa-body">
+    <main class="bpa-auth-shell">
+      <div class="bpa-auth-card">
+        <div class="bpa-auth-brand">
+          <div class="bpa-hero-badge">
+            <img src="/appmylife-mark.png" alt="AppMyLife" class="bpa-hero-badge-img">
+          </div>
+          <span class="bpa-brand-name">AppMyLife</span>
+        </div>
+
+        <% if flash[:alert].present? %>
+          <div class="bpa-auth-alert"><%= flash[:alert] %></div>
+        <% end %>
+        <% if flash[:notice].present? %>
+          <div class="bpa-auth-notice"><%= flash[:notice] %></div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </main>
+  </body>
+</html>
