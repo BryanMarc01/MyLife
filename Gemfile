@@ -46,3 +46,8 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+group :production do
+  # Use PostgreSQL in production when DATABASE_URL is configured (e.g. Render / Neon)
+  gem "pg", "~> 1.5"
+end

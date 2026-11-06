@@ -33,69 +33,6 @@
 
         <%= yield %>
       </div>
-
-      <!-- Modal de Acceso Rápido con Google / GitHub (Sin requerir claves de API externas) -->
-      <div
-        class="bpa-composer-backdrop"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Acceso rápido con proveedor"
-        hidden
-        data-auth-form-target="socialModal"
-      >
-        <%= form_with url: social_auth_path, method: :post, class: "bpa-auth-social-dialog" do %>
-          <input type="hidden" name="provider" value="google" data-auth-form-target="socialProviderInput">
-
-          <div class="bpa-auth-social-top">
-            <span class="bpa-auth-social-badge">
-              Continuar con <strong data-auth-form-target="socialProviderLabel">Google</strong>
-            </span>
-            <button
-              type="button"
-              class="bpa-close-btn"
-              data-action="click->auth-form#closeSocial"
-              aria-label="Cerrar"
-            >
-              <%= bpa_icon("close", size: 18) %>
-            </button>
-          </div>
-
-          <p class="bpa-auth-subtitle" style="margin-bottom: 18px;">
-            Confirma la cuenta con la que deseas entrar o crear tu bitácora privada al instante:
-          </p>
-
-          <div class="bpa-auth-field" style="margin-bottom: 14px;">
-            <label class="bpa-auth-label" for="social-name-input">Tu nombre</label>
-            <input
-              id="social-name-input"
-              type="text"
-              name="name"
-              placeholder="Ej. Bryan Marc"
-              required
-              class="bpa-auth-input"
-              data-auth-form-target="socialNameInput"
-            >
-          </div>
-
-          <div class="bpa-auth-field">
-            <label class="bpa-auth-label" for="social-email-input">Correo de tu cuenta</label>
-            <input
-              id="social-email-input"
-              type="email"
-              name="email"
-              placeholder="tu@gmail.com"
-              required
-              class="bpa-auth-input"
-              data-auth-form-target="socialEmailInput"
-            >
-          </div>
-
-          <button type="submit" class="bpa-auth-submit" style="margin-top: 22px;">
-            <span>Continuar de forma segura</span>
-            <%= bpa_icon("arrow", size: 18) %>
-          </button>
-        <% end %>
-      </div>
     </main>
   </body>
 </html>

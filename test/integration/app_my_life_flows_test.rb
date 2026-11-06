@@ -17,8 +17,6 @@ class AppMyLifeFlowsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "¿Olvidaste tu contraseña?", response.body
     assert_match "Mantener mi sesión iniciada", response.body
-    assert_match "Google", response.body
-    assert_match "GitHub", response.body
 
     get signup_path
     assert_response :success
@@ -42,22 +40,18 @@ class AppMyLifeFlowsTest < ActionDispatch::IntegrationTest
     assert_match "Una chispa. Todo en orden.", response.body
   end
 
-  test "social sign in and password reset flows work end to end" do
-    # 1. Social quick login (Google) without external API keys
-    assert_difference -> { User.count }, 1 do
-      post social_auth_path, params: {
-        provider: "google",
+  test "password reset flow works end to end" do
+    post signup_path, params: {
+      user: {
         name: "Bryan Marc",
-        email: "bryan@gmail.com"
+        email: "bryan@gmail.com",
+        password: "password123",
+        password_confirmation: "password123"
       }
-    end
-    assert_redirected_to root_path
-    follow_redirect!
-    assert_match "Hola, Bryan Marc.", response.body
-
+    }
     delete logout_path
 
-    # 2. Password reset flow with signed expiring token
+    # Password reset flow with signed expiring token
     user = User.find_by!(email: "bryan@gmail.com")
     token = user.generate_token_for(:password_reset)
 

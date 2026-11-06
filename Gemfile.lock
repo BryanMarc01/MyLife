@@ -158,6 +158,9 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.7-x86_64-linux-gnu)
       racc (~> 1.4)
+    pg (1.7.0-aarch64-linux)
+    pg (1.7.0-x64-mingw-ucrt)
+    pg (1.7.0-x86_64-linux)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.1)
@@ -280,6 +283,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
+  pg (~> 1.5)
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.4, >= 8.1.4.1)
